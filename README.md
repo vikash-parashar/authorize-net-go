@@ -3,7 +3,7 @@
 Welcome to the **Authorize.Net Golang Module**, a lightweight and modular package for integrating Authorize.Net payment gateway into your Golang web applications. This package is designed to support a variety of payment operations, including recurring payments, terminal integrations, refunds, and cancellations.
 
 ## Repository
-GitHub Repository: [authorize-net_go](https://github.com/vikash-parashar/authorize-net_go)
+GitHub Repository: [authorize-net-go](https://github.com/vikash-parashar/authorize-net-go)
 
 ---
 
@@ -36,12 +36,12 @@ GitHub Repository: [authorize-net_go](https://github.com/vikash-parashar/authori
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/vikash-parashar/authorize-net_go.git
+    git clone https://github.com/vikash-parashar/authorize-net-go.git
     ```
 
 2. Navigate to the project directory:
     ```bash
-    cd authorize-net_go
+    cd authorize-net-go
     ```
 
 3. Install dependencies:
