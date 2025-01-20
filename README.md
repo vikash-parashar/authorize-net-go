@@ -3,7 +3,7 @@
 Welcome to the **Authorize.Net Golang Module**, a lightweight and modular package for integrating Authorize.Net payment gateway into your Golang web applications. This package is designed to support a variety of payment operations, including recurring payments, terminal integrations, refunds, and cancellations.
 
 ## Repository
-GitHub Repository: [authorize-net-go](https://github.com/vikash-parashar/authorize-net-go)
+GitHub Repository: [authorize-net_go](https://github.com/vikash-parashar/authorize-net_go)
 
 ---
 
@@ -36,12 +36,12 @@ GitHub Repository: [authorize-net-go](https://github.com/vikash-parashar/authori
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/vikash-parashar/authorize-net-go.git
+    git clone https://github.com/vikash-parashar/authorize-net_go.git
     ```
 
 2. Navigate to the project directory:
     ```bash
-    cd authorize-net-go
+    cd authorize-net_go
     ```
 
 3. Install dependencies:
@@ -63,6 +63,21 @@ return Config{
     TransactionKey: "YOUR_TRANSACTION_KEY",
     BaseURL:       "https://apitest.authorize.net/xml/v1/request.api",
 }
+```
+
+### Test Credentials
+
+You can use the following test credentials to try out the module in sandbox mode:
+
+- **API Login ID**: `5KP3u95bQpv`
+- **Transaction Key**: `346HZ32z3fP4hTG2`
+- **Card Number**: `4111111111111111`
+- **Expiration Date**: Any valid future date (e.g., `2025-12`)
+- **CVV**: `123`
+
+Make sure to set the `BaseURL` to the sandbox environment:
+```plaintext
+https://apitest.authorize.net/xml/v1/request.api
 ```
 
 ---
