@@ -6,10 +6,15 @@ type Config struct {
 	BaseURL        string
 }
 
-func LoadConfig() Config {
+func LoadConfig(isSandbox bool) Config {
+	baseURL := "https://apitest.authorize.net/xml/v1/request.api"
+	if !isSandbox {
+		baseURL = "https://api.authorize.net/xml/v1/request.api"
+	}
+
 	return Config{
-		APILoginID:     "YOUR_API_LOGIN_ID",
-		TransactionKey: "YOUR_TRANSACTION_KEY",
-		BaseURL:        "https://apitest.authorize.net/xml/v1/request.api",
+		APILoginID:     "9Z47qnW8",
+		TransactionKey: "6uh7srY2r2G5K88r",
+		BaseURL:        baseURL,
 	}
 }
