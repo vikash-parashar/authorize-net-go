@@ -22,8 +22,8 @@ func NewClient(cfg config.Config) *APIClient {
 	}
 }
 
-func (apiClient *APIClient) Post(endpoint string, payload []byte) (*http.Response, error) {
-	url := apiClient.BaseURL + endpoint
+func (apiClient *APIClient) Post(payload []byte) (*http.Response, error) {
+	url := apiClient.BaseURL
 	log.Printf("[DEBUG] Making POST request to URL: %s", url)
 	log.Printf("[DEBUG] Payload: %s", string(payload))
 

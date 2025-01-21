@@ -1,83 +1,5 @@
 package models
 
-// MerchantAuthentication represents authentication details.
-type MerchantAuthentication struct {
-	Name           string `json:"name"`
-	TransactionKey string `json:"transactionKey"`
-}
-
-// CreditCard represents the payment card details.
-type CreditCard struct {
-	CardNumber     string `json:"cardNumber,omitempty"`
-	ExpirationDate string `json:"expirationDate,omitempty"`
-	CVV            string `json:"cardCode,omitempty"`
-}
-
-// LineItem represents an individual line item in the order.
-type LineItem struct {
-	ItemID      string  `json:"itemId"`
-	Name        string  `json:"name"`
-	Description string  `json:"description"`
-	Quantity    int     `json:"quantity"`
-	UnitPrice   float64 `json:"unitPrice"`
-}
-
-type BillTo struct {
-	FirstName string `json:"firstName"`
-	LastName  string `json:"lastName"`
-	Company   string `json:"company"`
-	Address   string `json:"address"`
-	City      string `json:"city"`
-	State     string `json:"state"`
-	Zip       string `json:"zip"`
-	Country   string `json:"country"`
-}
-
-type ShipTo struct {
-	FirstName string `json:"firstName"`
-	LastName  string `json:"lastName"`
-	Company   string `json:"company"`
-	Address   string `json:"address"`
-	City      string `json:"city"`
-	State     string `json:"state"`
-	Zip       string `json:"zip"`
-	Country   string `json:"country"`
-}
-
-// TransactionRequestDetails represents the main details of the transaction request.
-type TransactionRequestDetails struct {
-	TransactionType string `json:"transactionType"`
-	Amount          string `json:"amount"`
-	Payment         struct {
-		CreditCard CreditCard `json:"creditCard"`
-	} `json:"payment"`
-	Order struct {
-		InvoiceNumber string `json:"invoiceNumber,omitempty"`
-		Description   string `json:"description,omitempty"`
-	} `json:"order,omitempty"`
-
-	Shipping struct {
-		Amount      float64 `json:"amount"`
-		Name        string  `json:"name,omitempty"`
-		Description string  `json:"description,omitempty"`
-	} `json:"shipping,omitempty"`
-	// Customer struct {
-	// 	ID string `json:"id"`
-	// } `json:"customer,omitempty"`
-	BillTo BillTo `json:"billTo,omitempty"`
-	ShipTo ShipTo `json:"shipTo,omitempty"`
-}
-
-// RootRequest represents the full JSON request.
-// RootRequest represents the full JSON request.
-type RootRequest struct {
-	CreateTransactionRequest struct {
-		// RefId                  string                    `json:"refId,omitempty"`
-		MerchantAuthentication MerchantAuthentication    `json:"merchantAuthentication"`
-		TransactionRequest     TransactionRequestDetails `json:"transactionRequest"`
-	} `json:"createTransactionRequest"`
-}
-
 type TransactionRequestUI struct {
 	TransactionAmount string `json:"transaction_amount,omitempty"`
 	AccountNumber     string `json:"account_number,omitempty"`
@@ -93,46 +15,129 @@ type TransactionRequestUI struct {
 		PostalCode string `json:"postal_code,omitempty"`
 		Country    string `json:"country,omitempty"`
 	} `json:"billing_address,omitempty"`
+	TransactionID string `json:"trans_id,omitempty"`
 }
 
-// Messages represent the overall status and messages of the response.
-type Messages struct {
-	ResultCode string `json:"resultCode"`
-	Message    []struct {
-		Code string `json:"code"`
-		Text string `json:"text"`
-	} `json:"message"`
+type RootChargeCreditCardRequest struct {
+	CreateTransactionRequest CreateTransactionRequest `json:"createTransactionRequest,omitempty"`
 }
 
-// TransactionResponse represents the main transaction details.
+type CreateTransactionRequest struct {
+	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication,omitempty"`
+	TransactionRequest     TransactionRequest     `json:"transactionRequest,omitempty"`
+}
+
+type MerchantAuthentication struct {
+	Name           string `json:"name,omitempty"`
+	TransactionKey string `json:"transactionKey,omitempty"`
+}
+type TransactionRequest struct {
+	TransactionType string  `json:"transactionType,omitempty"`
+	Amount          string  `json:"amount,omitempty"`
+	Payment         Payment `json:"payment,omitempty"`
+	BillTo          BillTo  `json:"billTo,omitempty"`
+	// ShipTo          BillTo  `json:"shipTo,omitempty"`
+	TransactionIdForVoidOrRefund string `json:"refTransId,omitempty"`
+}
+
+type Payment struct {
+	CreditCard CreditCard `json:"creditCard,omitempty"`
+}
+
+type CreditCard struct {
+	CardNumber     string `json:"cardNumber,omitempty"`
+	ExpirationDate string `json:"expirationDate,omitempty"`
+	CVV            string `json:"cardCode,omitempty"`
+}
+
+type BillTo struct {
+	FirstName string `json:"firstName,omitempty"`
+	LastName  string `json:"lastName,omitempty"`
+	Company   string `json:"company,omitempty"`
+	Address   string `json:"address,omitempty"`
+	City      string `json:"city,omitempty"`
+	State     string `json:"state,omitempty"`
+	Zip       string `json:"zip,omitempty"`
+	Country   string `json:"country,omitempty"`
+}
+
+type RootChargeCreditCardResponse struct {
+	TransactionResponse TransactionResponse `json:"transactionResponse,omitempty"`
+	Messages            struct {
+		ResultCode string    `json:"resultCode,omitempty"`
+		Message    []Message `json:"message,omitempty"`
+	}
+}
+
 type TransactionResponse struct {
-	ResponseCode   string `json:"responseCode,omitempty"`
-	AuthCode       string `json:"authCode,omitempty"`
-	AVSResultCode  string `json:"avsResultCode,omitempty"`
-	CVVResultCode  string `json:"cvvResultCode,omitempty"`
-	CAVVResultCode string `json:"cavvResultCode,omitempty"`
-	TransID        string `json:"transId,omitempty"`
-	RefTransID     string `json:"refTransID,omitempty"`
-	TransHash      string `json:"transHash,omitempty"`
-	TestRequest    string `json:"testRequest,omitempty"`
-	AccountNumber  string `json:"accountNumber,omitempty"`
-	AccountType    string `json:"accountType,omitempty"`
-	Messages       []struct {
-		Code        string `json:"code"`
-		Description string `json:"description"`
-	} `json:"messages,omitempty"`
-	UserFields []struct {
-		Name  string `json:"name"`
-		Value string `json:"value"`
-	} `json:"userFields,omitempty"`
-	TransHashSha2                          string `json:"transHashSha2,omitempty"`
-	SupplementalDataQualificationIndicator int    `json:"SupplementalDataQualificationIndicator,omitempty"`
-	NetworkTransID                         string `json:"networkTransId,omitempty"`
+	ResponseCode                           string    `json:"responseCode,omitempty"`
+	AuthCode                               string    `json:"authCode,omitempty"`
+	AvsResultCode                          string    `json:"avsResultCode,omitempty"`
+	CvvResultCode                          string    `json:"cvvResultCode,omitempty"`
+	CavvResultCode                         string    `json:"cavvResultCode,omitempty"`
+	TransactionId                          string    `json:"transId,omitempty"`
+	RefTransId                             string    `json:"refTransID,omitempty"`
+	TransHash                              string    `json:"transHash,omitempty"`
+	TestRequest                            string    `json:"testRequest,omitempty"`
+	AccountNumber                          string    `json:"accountNumber,omitempty"`
+	AccountType                            string    `json:"accountType,omitempty"`
+	Messages                               []Message `json:"messages,omitempty"`
+	Errors                                 []Error   `json:"errors,omitempty"`
+	TransHashSha2                          string    `json:"transHashSha2,omitempty"`
+	SupplementalDataQualificationIndicator int       `json:"SupplementalDataQualificationIndicator,omitempty"`
+	NetworkTransId                         string    `json:"networkTransId,omitempty"`
 }
 
-// CreateTransactionResponse represents the full response for createTransaction.
-type CreateTransactionResponse struct {
-	RefID               string              `json:"refId,omitempty"`
-	Messages            Messages            `json:"messages"`
-	TransactionResponse TransactionResponse `json:"transactionResponse"`
+type Message struct {
+	Code        string `json:"code,omitempty"`
+	Description string `json:"description,omitempty"`
+	Text        string `json:"text,omitempty"`
+}
+
+type TransactionResponseUI struct {
+	TransactionID       string `json:"transaction_id,omitempty"`
+	ResponseCode        string `json:"response_code"`
+	MessageDescription  string `json:"message_description"`
+	MessageText         string `json:"message_text,omitempty"`
+	MessageResponseCode string `json:"message_response_code"`
+	Error               string `json:"errors,omitempty"`
+}
+
+type Error struct {
+	ErrorCode string `json:"errorCode,omitempty"`
+	ErrorText string `json:"errorText,omitempty"`
+}
+
+type VoidTransactionRequest struct {
+	CreateTransactionRequest struct {
+		MerchantAuthentication struct {
+			Name           string `json:"name,omitempty"`
+			TransactionKey string `json:"transactionKey,omitempty"`
+		} `json:"merchantAuthentication,omitempty"`
+		TransactionRequest struct {
+			TransactionType              string `json:"transactionType,omitempty"`
+			TransactionIdForVoidOrRefund string `json:"refTransId,omitempty"`
+		} `json:"transactionRequest,omitempty"`
+	} `json:"createTransactionRequest,omitempty"`
+}
+
+type RefundTransactionRequest struct {
+	CreateTransactionRequest struct {
+		MerchantAuthentication struct {
+			Name           string `json:"name,omitempty"`
+			TransactionKey string `json:"transactionKey,omitempty"`
+		} `json:"merchantAuthentication,omitempty"`
+		TransactionRequest struct {
+			TransactionType string `json:"transactionType,omitempty"`
+			Amount          string `json:"amount,omitempty"`
+			Payment         struct {
+				CreditCard struct {
+					CardNumber     string `json:"cardNumber,omitempty"`
+					ExpirationDate string `json:"expirationDate,omitempty"`
+					// CVV            string `json:"cardCode,omitempty"`
+				} `json:"creditCard,omitempty"`
+			} `json:"payment,omitempty"`
+			TransactionIdForVoidOrRefund string `json:"refTransId,omitempty"`
+		} `json:"transactionRequest,omitempty"`
+	} `json:"createTransactionRequest,omitempty"`
 }
